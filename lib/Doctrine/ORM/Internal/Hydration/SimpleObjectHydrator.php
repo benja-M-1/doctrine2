@@ -106,6 +106,11 @@ class SimpleObjectHydrator extends AbstractHydrator
         }
 
         foreach ($sqlResult as $column => $value) {
+            if (in_array(strtoupper($column), $this->_platform->getDoctrineExtraColumns())
+                || in_array(strtolower($column), $this->_platform->getDoctrineExtraColumns())) {
+                continue;
+            }
+
             // Hydrate column information if not yet present
             if ( ! isset($cache[$column])) {
                 if (($info = $this->hydrateColumnInfo($entityName, $column)) === null) {
